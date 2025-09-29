@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Proyectos - Plataforma{% endblock %}
+{% block body %}
+  <h1 class="mb-4">Proyectos publicados</h1>
+  {% if projects %}
+    <div class="row">
+      {% for project in projects %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ project.title }}</h5>
+              <p class="card-text flex-fill">
+                {{ project.description|length > 120 ? project.description[:120] ~ '…' : project.description }}
+              </p>
+              <p class="card-text"><small class="text-muted">Por <strong>{{ project.owner.name }}</strong><br>{{ project.createdAt|date("Y-m-d H:i") }}</small></p>
+              <a href="{{ path('app_project_show', {'id': project.id}) }}" class="btn btn-primary mt-2">Ver detalles</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No hay proyectos publicados aún.</p>
+  {% endif %}
+{% endblock %}

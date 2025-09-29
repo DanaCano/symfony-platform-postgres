@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block title %}Proyecto {{ project.title }}{% endblock %}
+{% block body %}
+  <h1 class="mb-3">{{ project.title }}</h1>
+  <p>{{ project.description }}</p>
+  <p><small class="text-muted">Publicado por <strong>{{ project.owner.name }}</strong> el {{ project.createdAt|date("Y-m-d H:i") }}</small></p>
+
+  {% if app.user and project.owner.id == app.user.id %}
+    <h3 class="mt-5">Postulaciones Recibidas</h3>
+    {% if project.applications|length > 0 %}
+      {% for application in project.applications %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <p><strong>{{ application.applicant.name }}</strong>:</p>
+            <p>"{{ application.message }}"</p>
+            <p class="text-muted"><small>{{ application.createdAt|date("Y-m-d H:i") }}</small></p>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Aún no hay postulaciones para este proyecto.</p>
+    {% endif %}
+  {% else %}
+    {% if app.user %}
+      <h3 class="mt-4">Postularse a este proyecto</h3>
+      <form id="apply-form" data-project-id="{{ project.id }}" method="post">
+        <div class="mb-3">
+          <label for="message" class="form-label">Mensaje de postulación</label>
+          <textarea id="message" name="message" class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Enviar Postulación</button>
+      </form>
+    {% else %}
+      <p class="mt-4">
+        <a href="{{ path('app_login') }}">Inicia sesión</a> o <a href="{{ path('app_register') }}">regístrate</a> para postularte a este proyecto.
+      </p>
+    {% endif %}
+  {% endif %}
+{% endblock %}

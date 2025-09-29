@@ -1,0 +1,10 @@
+/vendor/
+/var/
+/node_modules/
+.env.local
+.env.*.local
+/.phpunit.result.cache
+.phpunit.cache/
+/public/build/
+/public/bundles/
+/composer.lock

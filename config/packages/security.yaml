@@ -1,0 +1,34 @@
+security:
+  enable_authenticator_manager: true
+
+  password_hashers:
+    App\Entity\User: 'auto'
+
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|js|images)/
+      security: false
+    main:
+      lazy: true
+      provider: app_user_provider
+      form_login:
+        login_path: app_login
+        check_path: app_login
+        username_parameter: email
+        password_parameter: password
+        csrf_token_generator: security.csrf.token_manager
+      logout:
+        path: app_logout
+        target: app_home
+
+  access_control:
+    - { path: ^/project/new, roles: ROLE_USER }
+    - { path: ^/project/\d+/apply, roles: ROLE_USER }
+    - { path: ^/my-projects, roles: ROLE_USER }
+    - { path: ^/, roles: PUBLIC_ACCESS }

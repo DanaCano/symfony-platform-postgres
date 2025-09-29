@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nuevo Proyecto{% endblock %}
+{% block body %}
+  <h1>Crear un Nuevo Proyecto</h1>
+  <form method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">Título</label>
+      <input type="text" name="title" id="title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Publicar Proyecto</button>
+  </form>
+{% endblock %}
