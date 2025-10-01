@@ -13,7 +13,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 WORKDIR /var/www/html
 RUN a2enmod rewrite
 
-COPY composer.json composer.lock ./
+COPY composer.* ./
 
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader || \
     { composer clear-cache && composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader; }
