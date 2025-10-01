@@ -1,4 +1,4 @@
-FROM php:8.4-apache
+FROM php:8.3-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libicu-dev libpq-dev git unzip \
@@ -18,8 +18,10 @@ COPY composer.* ./
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader || \
     { composer clear-cache && composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader; }
 
-COPY . /var/www/html
-RUN composer install --no-dev --optimize-autoloader
+COPY . .
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
-CMD php -S 0.0.0.0:$PORT -t public
+CMD ["/entrypoint.sh"]
+#CMD php -S 0.0.0.0:$PORT -t public
