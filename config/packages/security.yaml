@@ -14,21 +14,33 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|js|images)/
       security: false
+
     main:
       lazy: true
       provider: app_user_provider
+
       form_login:
         login_path: app_login
         check_path: app_login
         username_parameter: email
         password_parameter: password
-        csrf_token_generator: security.csrf.token_manager
+
+        enable_csrf: true
+        csrf_parameter: _csrf_token
+        csrf_token_id: authenticate
+
       logout:
         path: app_logout
         target: app_home
 
   access_control:
+
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
+
+    # protegido
     - { path: ^/project/new, roles: ROLE_USER }
     - { path: ^/project/\d+/apply, roles: ROLE_USER }
     - { path: ^/my-projects, roles: ROLE_USER }
+
     - { path: ^/, roles: PUBLIC_ACCESS }
