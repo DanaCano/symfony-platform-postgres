@@ -14,14 +14,14 @@ WORKDIR /var/www/html
 RUN a2enmod rewrite
 
 COPY composer.* ./
-
-RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader || \
-    { composer clear-cache && composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader; }
+RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts --optimize-autoloader || \
+    { composer clear-cache && composer install --no-dev --prefer-dist --no-interaction --no-scripts --optimize-autoloader; }
 
 COPY . .
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN mkdir -p var/cache var/log && chown -R www-data:www-data var
+
 EXPOSE 8080
 CMD ["/entrypoint.sh"]
-#CMD php -S 0.0.0.0:$PORT -t public
