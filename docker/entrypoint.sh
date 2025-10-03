@@ -21,6 +21,9 @@ done
 echo "Running doctrine migrations (if any)..."
 php -d memory_limit=-1 bin/console doctrine:migrations:migrate -n || true
 
+echo "Validating Doctrine schema..."
+php -d memory_limit=-1 bin/console doctrine:schema:validate || true
+
 echo "Clearing and warming up cache..."
 php -d memory_limit=-1 bin/console cache:clear --no-warmup || true
 php -d memory_limit=-1 bin/console cache:warmup || true
