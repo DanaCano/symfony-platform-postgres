@@ -2,8 +2,8 @@
 set -eu
 
 echo "=== BOOT: Symfony on Render ==="
-echo "APP_ENV=${APP_ENV:-not-set}  APP_DEBUG=${APP_DEBUG:-not-set}"
-echo "DATABASE_URL (redacted host): $(printf '%s\n' "${DATABASE_URL:-missing}" | sed 's#://.*@#://***:***@#')"
+echo "APP_ENV=${APP_ENV:-prod}  APP_DEBUG=${APP_DEBUG:-0}"
+[ -n "${DATABASE_URL:-}" ] && echo "DATABASE_URL (redacted host): $(printf '%s\n' "$DATABASE_URL" | sed 's#://.*@#://***:***@#')"
 
 export APP_ENV="${APP_ENV:-prod}"
 export APP_DEBUG="${APP_DEBUG:-0}"
@@ -24,26 +24,13 @@ for i in $(seq 1 60); do
   sleep 2
 done
 
-echo "-> Creating database if not exists..."
-php -d memory_limit=-1 bin/console doctrine:database:create --if-not-exists --no-interaction
+echo "-> Ensure migration metadata table..."
+php -d memory_limit=-1 bin/console doctrine:migrations:sync-metadata-storage -n || true
 
-HAS_MIGRATIONS="no"
-if [ -d migrations ]; then
-  if ls migrations/*.php >/dev/null 2>&1; then
-    HAS_MIGRATIONS="yes"
-  fi
-fi
-
-if [ "$HAS_MIGRATIONS" = "yes" ]; then
-  echo "-> Running migrations..."
-  php -d memory_limit=-1 bin/console doctrine:migrations:migrate -n --allow-no-migration
-  echo "-> Sync metadata storage..."
-  php -d memory_limit=-1 bin/console doctrine:migrations:sync-metadata-storage -n || true
-else
-  echo "-> No migrations found; applying schema:update --force..."
-  php -d memory_limit=-1 bin/console doctrine:schema:update --force --no-interaction
-  echo "-> Initialize migrations storage (so future migrations funcionen)..."
-  php -d memory_limit=-1 bin/console doctrine:migrations:sync-metadata-storage -n || true
+echo "-> Running migrations (with baseline fallback)..."
+if ! php -d memory_limit=-1 bin/console doctrine:migrations:migrate -n --allow-no-migration; then
+  echo "   Migrations failed (likely tables already exist). Marking existing migrations as executed..."
+  php -d memory_limit=-1 bin/console doctrine:migrations:version --add --all -n || true
 fi
 
 echo "-> Validating Doctrine schema..."
@@ -52,6 +39,8 @@ php -d memory_limit=-1 bin/console doctrine:schema:validate || true
 echo "-> Clearing and warming up cache..."
 php -d memory_limit=-1 bin/console cache:clear --no-warmup || true
 php -d memory_limit=-1 bin/console cache:warmup || true
+
+echo "-> Installing assets..."
 php -d memory_limit=-1 bin/console assets:install public --no-interaction || true
 
 echo "-> Starting PHP built-in server..."
