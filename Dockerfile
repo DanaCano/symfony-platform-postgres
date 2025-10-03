@@ -21,7 +21,5 @@ COPY . .
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-RUN mkdir -p var/cache var/log && chown -R www-data:www-data var
-
 EXPOSE 8080
 CMD ["/entrypoint.sh"]
