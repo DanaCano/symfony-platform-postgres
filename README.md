@@ -1,14 +1,14 @@
-# Plataforma Symfony + Twig + JavaScript (PostgreSQL)
+# Plataform Symfony + Twig + JavaScript (PostgreSQL)
 
-Proyecto generado el 2025-09-26 listo para correr en macOS, subir a GitHub y desplegar gratis.
+Project generated on 2025-09-26, ready to run on macOS, upload to GitHub, and deploy for free.
 
-## Requisitos
-- PHP 8.3+ (ideal 8.4)
+## Requirements
+- PHP 8.3+ (ideally 8.4)
 - Composer 2
-- Symfony CLI (recomendado)
-- PostgreSQL 15/16 (opcional; por defecto usamos SQLite para arrancar más rápido)
+- Symfony CLI (recommended)
+- PostgreSQL 15/16 (optional; by default we use SQLite for faster startup)
 
-## Pasos rápidos (SQLite)
+## Quick steps (SQLite)
 ```bash
 composer install
 php bin/console doctrine:database:create --if-not-exists
@@ -16,31 +16,31 @@ php bin/console doctrine:migrations:migrate -n || true
 symfony serve -d # o php -S localhost:8000 -t public
 ```
 
-Abrir: http://localhost:8000
+Open: http://localhost:8000
 
-## Cambiar a PostgreSQL
-En `.env`, usa:
+## Switch to PostgreSQL
+In `.env`, use:
 ```
 # DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 DATABASE_URL="postgresql://usuario:password@127.0.0.1:5432/mi_bd?serverVersion=16&charset=utf8"
 ```
-Luego:
+Then:
 ```bash
 php bin/console doctrine:database:create --if-not-exists
 php bin/console doctrine:migrations:migrate -n
 ```
 
-## Crear usuario admin
+## Create admin user
 ```bash
-php bin/console app:make-admin email@ejemplo.com
+php bin/console app:make-admin email@example.com
 ```
 
-## Despliegue gratuito
-- **Render**: Web Service (Start: `php -S 0.0.0.0:$PORT -t public`), Postgres add-on, `DATABASE_URL` configurada.
-- **Railway**: conecta repo, añade Postgres, `DATABASE_URL` env var.
-- **Fly.io**: opcional con Dockerfile.
+## Free deployment
+- **Render**: Web Service (Start: `php -S 0.0.0.0:$PORT -t public`), Postgres add-on, `DATABASE_URL` configured.
+- **Railway**: connect repo, add Postgres, `DATABASE_URL` env var.
+- **Fly.io**: optional with Dockerfile.
 
-## Rutas
+## Routes
 - `/` listado de proyectos
 - `/project/new` crear proyecto (requiere login)
 - `/project/<built-in function id>` detalle + postulación
@@ -49,35 +49,35 @@ php bin/console app:make-admin email@ejemplo.com
 - `/login` login, `/logout` logout
 
 ---
-### Uso con PostgreSQL (rápido con Docker)
+### Use with PostgreSQL (Quick with Docker)
 1. `docker compose up -d`
-2. Copia `.env.postgres` a `.env` **(o** `.env.local.example` a `.env.local`)**
+2. Copy `.env.postgres` to `.env` **(o** `.env.local.example` a `.env.local`)**
 3. `composer install`
 4. `php bin/console doctrine:migrations:migrate -n`
 5. `symfony serve -d` y abre http://localhost:8000
 
-> Si no usas Docker, instala Postgres local y ajusta `DATABASE_URL` con tus credenciales.
+> If you are not using Docker, install Postgres locally and adjust `DATABASE_URL` with your credentials.
 
 
-## Modo PostgreSQL (por defecto en este ZIP)
-1) Levanta Postgres con Docker:
+## Mode PostgreSQL (by default in this ZIP file)
+1) Set up Postgres with Docker:
 ```bash
 docker-compose up -d
 ```
-2) Instala dependencias y crea esquema:
+2) Install dependencies and create schema:
 ```bash
 composer install --no-interaction
 php bin/console doctrine:database:create --if-not-exists
 php bin/console doctrine:migrations:migrate -n
 ```
-3) Servir la app:
+3) Serve the app:
 ```bash
 symfony serve -d
 # o
 php -S 0.0.0.0:8000 -t public
 ```
 
-Credenciales DB usadas:
+DB credentials used:
 - host: 127.0.0.1
 - port: 5432
 - db: app_db
