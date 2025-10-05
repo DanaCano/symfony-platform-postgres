@@ -3,5 +3,5 @@
 {% block title %}Mon Espace{% endblock %}
 {% block body %}
   <h1>Mon Espace</h1>
-  <p>Bonjour, {{ app.user.name ?? app.user.email }} ({{ app.user.roles|join(', ') }})</p>
+  <p>Bonjour, {{ app.user.name ?? app.user.email }}</p>
 {% endblock %}
