@@ -33,6 +33,11 @@ if ! php -d memory_limit=-1 bin/console doctrine:migrations:migrate -n --allow-n
   php -d memory_limit=-1 bin/console doctrine:migrations:version --add --all -n || true
 fi
 
+if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
+  echo "-> Ensuring admin user ${ADMIN_EMAIL} exists..."
+  php -d memory_limit=-1 bin/console app:make-admin "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" || true
+fi
+
 echo "-> Validating Doctrine schema..."
 php -d memory_limit=-1 bin/console doctrine:schema:validate || true
 

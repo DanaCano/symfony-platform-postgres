@@ -25,6 +25,7 @@ security:
         username_parameter: email
         password_parameter: password
 
+        # CSRF correcto para Symfony 6.4
         enable_csrf: true
         csrf_parameter: _csrf_token
         csrf_token_id: authenticate
@@ -33,12 +34,14 @@ security:
         path: app_logout
         target: app_home
 
-  access_control:
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_USER]
 
+  access_control:
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/register, roles: PUBLIC_ACCESS }
 
-    # protegido
+    - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/project/new, roles: ROLE_USER }
     - { path: ^/project/\d+/apply, roles: ROLE_USER }
     - { path: ^/my-projects, roles: ROLE_USER }

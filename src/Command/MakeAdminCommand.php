@@ -2,41 +2,53 @@
 
 namespace App\Command;
 
-use App\Repository\UserRepository;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsCommand(name: 'app:make-admin', description: 'Concede ROLE_ADMIN a un usuario por email')]
+#[AsCommand(name: 'app:make-admin', description: 'Create or promote an admin user')]
 class MakeAdminCommand extends Command
 {
-    public function __construct(private UserRepository $users, private EntityManagerInterface $em)
-    {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private UserPasswordHasherInterface $hasher
+    ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this->addArgument('email', InputArgument::REQUIRED, 'Email del usuario');
+        $this
+            ->addArgument('email', InputArgument::REQUIRED, 'Admin email')
+            ->addArgument('password', InputArgument::REQUIRED, 'Admin plain password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $email = (string)$input->getArgument('email');
-        $user = $this->users->findOneBy(['email' => $email]);
-        if (!$user) { $output->writeln('<error>Usuario no encontrado</error>'); return Command::FAILURE; }
-        $roles = $user->getRoles();
-        if (!in_array('ROLE_ADMIN', $roles)) {
-            $roles[] = 'ROLE_ADMIN';
-            $user->setRoles($roles);
-            $this->em->flush();
-            $output->writeln('<info>ROLE_ADMIN asignado.</info>');
-        } else {
-            $output->writeln('<comment>El usuario ya es admin.</comment>');
-        }
+        $io = new SymfonyStyle($input, $output);
+
+        $email = strtolower(trim((string) $input->getArgument('email')));
+        $password = (string) $input->getArgument('password');
+
+        /** @var \App\Repository\UserRepository $repo */
+        $repo = $this->em->getRepository(User::class);
+
+        $user = $repo->findOneBy(['email' => $email]) ?? new User();
+        $user->setEmail($email);
+        $user->setRoles(['ROLE_ADMIN']); // hereda ROLE_USER por role_hierarchy
+
+        $user->setPassword($this->hasher->hashPassword($user, $password));
+
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $io->success(sprintf('Admin listo: %s', $email));
         return Command::SUCCESS;
     }
 }

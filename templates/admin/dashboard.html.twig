@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin{% endblock %}
+{% block body %}
+  <h1>Panneau d'administration</h1>
+  <p>Bonjour, {{ app.user.email }} ({{ app.user.roles|join(', ') }})</p>
+{% endblock %}
