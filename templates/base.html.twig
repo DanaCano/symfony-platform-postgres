@@ -3,27 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Plataforma Symfony{% endblock %}</title>
+  <title>{% block title %}Plateforme Symfony{% endblock %}</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('app_home') }}">🌐 Plataforma</a>
+    <a class="navbar-brand" href="{{ path('app_home') }}">🌐 Plateforme DICR</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         {% if app.user %}
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_project_new') }}">Nuevo Proyecto</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_project_my_projects') }}">Mis Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Salir ({{ app.user.name }})</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}">Projets</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_project_new') }}">Nouveau projet</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_project_my_projects') }}">Mes projets</a></li>
+
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item"><a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a></li>
         {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Iniciar Sesión</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Registro</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('user_dashboard') }}">Mon espace</a></li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('app_logout') }}">Sortir ({{ app.user.name ?? app.user.email }})
+          </a>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Se connecter</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Inscription</a></li>
         {% endif %}
       </ul>
     </div>

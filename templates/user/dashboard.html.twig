@@ -1,7 +1,7 @@
-{# templates/admin/dashboard.html.twig #}
+{# templates/user/dashboard.html.twig #}
 {% extends 'base.html.twig' %}
-{% block title %}Panneau d'administration{% endblock %}
+{% block title %}Mon Espace{% endblock %}
 {% block body %}
-  <h1>Panneau d'administration</h1>
+  <h1>Mon Espace</h1>
   <p>Bonjour, {{ app.user.name ?? app.user.email }} ({{ app.user.roles|join(', ') }})</p>
 {% endblock %}
