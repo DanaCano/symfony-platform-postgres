@@ -30,7 +30,7 @@
             <li class="nav-item"><a class="nav-link" href="{{ path('user_dashboard') }}">Mon espace</a></li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_logout') }}">Sortir ({{ app.user.name is defined and app.user.name ? app.user.name : app.user.email }})
+            <a class="nav-link" href="{{ path('app_logout') }}" aria-label="Se déconnecter">Sortir</a>
             </a>
           </li>
         {% else %}
