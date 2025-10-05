@@ -40,14 +40,14 @@ fi
 
 echo "-> Checking Doctrine schema..."
 if ! php -d memory_limit=-1 bin/console doctrine:schema:validate; then
-  echo "   Schema out of sync. Showing diff SQL..."
-  php -d memory_limit=-1 bin/console doctrine:schema:update --dump-sql || true
+  echo "   Schema out of sync. Showing diff SQL (COMPLETE)…"
+  php -d memory_limit=-1 bin/console doctrine:schema:update --dump-sql --complete || true
 
-if [ "${ALLOW_SCHEMA_UPDATE:-0}" = "1" ]; then
-    echo "   Applying safe update (ALLOW_SCHEMA_UPDATE=1)..."
-    php -d memory_limit=-1 bin/console doctrine:schema:update --force --no-interaction || true
+  if [ "${ALLOW_SCHEMA_UPDATE:-0}" = "1" ]; then
+    echo "   Applying safe update with --complete (ALLOW_SCHEMA_UPDATE=1)…"
+    php -d memory_limit=-1 bin/console doctrine:schema:update --force --no-interaction --complete || true
   else
-    echo "   Skipping automatic update (set ALLOW_SCHEMA_UPDATE=1 to apply)."
+    echo "   Skipping automatic update. Set ALLOW_SCHEMA_UPDATE=1 to apply."
   fi
 fi
 
