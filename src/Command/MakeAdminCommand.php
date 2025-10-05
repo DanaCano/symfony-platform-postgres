@@ -34,16 +34,22 @@ class MakeAdminCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $email = strtolower(trim((string) $input->getArgument('email')));
-        $password = (string) $input->getArgument('password');
+        $plain = (string) $input->getArgument('password');
 
         /** @var \App\Repository\UserRepository $repo */
         $repo = $this->em->getRepository(User::class);
-
         $user = $repo->findOneBy(['email' => $email]) ?? new User();
-        $user->setEmail($email);
-        $user->setRoles(['ROLE_ADMIN']); // hereda ROLE_USER por role_hierarchy
 
-        $user->setPassword($this->hasher->hashPassword($user, $password));
+        $user->setEmail($email);
+        if (method_exists($user, 'getName') && $user->getName() === '') {
+            $user->setName('Admin');
+        }
+
+        // rol admin (hereda ROLE_USER por role_hierarchy)
+        $user->setRoles(['ROLE_ADMIN']);
+
+        // siempre (re)hasheamos con el algoritmo actual
+        $user->setPassword($this->hasher->hashPassword($user, $plain));
 
         $this->em->persist($user);
         $this->em->flush();
