@@ -38,8 +38,18 @@ if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
   php -d memory_limit=-1 bin/console app:make-admin "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" || true
 fi
 
-echo "-> Validating Doctrine schema..."
-php -d memory_limit=-1 bin/console doctrine:schema:validate || true
+echo "-> Checking Doctrine schema..."
+if ! php -d memory_limit=-1 bin/console doctrine:schema:validate; then
+  echo "   Schema out of sync. Showing diff SQL..."
+  php -d memory_limit=-1 bin/console doctrine:schema:update --dump-sql || true
+
+if [ "${ALLOW_SCHEMA_UPDATE:-0}" = "1" ]; then
+    echo "   Applying safe update (ALLOW_SCHEMA_UPDATE=1)..."
+    php -d memory_limit=-1 bin/console doctrine:schema:update --force --no-interaction || true
+  else
+    echo "   Skipping automatic update (set ALLOW_SCHEMA_UPDATE=1 to apply)."
+  fi
+fi
 
 echo "-> Clearing and warming up cache..."
 php -d memory_limit=-1 bin/console cache:clear --no-warmup || true
