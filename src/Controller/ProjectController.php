@@ -103,4 +103,54 @@ class ProjectController extends AbstractController
         $projects = $doctrine->getRepository(Project::class)->findBy(['owner' => $this->getUser()], ['createdAt' => 'DESC']);
         return $this->render('project/my_projects.html.twig', ['projects' => $projects]);
     }
+
+    #[Route('/{id}/edit', name: 'edit', requirements: ['id' => '\\d+'])]
+    public function edit(Project $project, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $isOwner = $project->getOwner() === $this->getUser();
+        if (!$isOwner && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($request->isMethod('POST')) {
+            $title = trim((string)$request->request->get('title'));
+            $description = trim((string)$request->request->get('description'));
+
+            if (!$title || !$description) {
+                $this->addFlash('error', 'Debes completar título y descripción.');
+            } else {
+                $project->setTitle($title)->setDescription($description);
+                $doctrine->getManager()->flush();
+                $this->addFlash('success', 'Proyecto actualizado.');
+                return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
+            }
+        }
+
+        return $this->render('project/edit.html.twig', ['project' => $project]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', methods: ['POST'], requirements: ['id' => '\\d+'])]
+    public function delete(Project $project, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $isOwner = $project->getOwner() === $this->getUser();
+        if (!$isOwner && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->isCsrfTokenValid('delete_project_'.$project->getId(), (string)$request->request->get('_token'))) {
+            $this->addFlash('error', 'Token CSRF inválido.');
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
+        }
+
+        $em = $doctrine->getManager();
+        $em->remove($project);
+        $em->flush();
+
+        $this->addFlash('success', 'Proyecto eliminado.');
+        return $this->redirectToRoute('app_home');
+    }
 }
