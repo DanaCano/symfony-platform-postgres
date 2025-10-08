@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Projets{% endblock %}
+{% block body %}
+  <h1 class="mb-3">Projets</h1>
+  <table class="table table-striped">
+    <thead><tr><th>ID</th><th>Titre</th><th>Propriétaire</th><th>Créé</th><th class="text-end">Actions</th></tr></thead>
+    <tbody>
+      {% for p in projects %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.title }}</td>
+          <td>{{ p.owner.name }}</td>
+          <td>{{ p.createdAt|date('Y-m-d H:i') }}</td>
+          <td class="text-end">
+            <a class="btn btn-sm btn-outline-primary" href="{{ path('admin_projects_edit', {id: p.id}) }}">Modifier</a>
+            <form class="d-inline" method="post" action="{{ path('admin_projects_delete', {id: p.id}) }}" onsubmit="return confirm('Supprimer ce projet ?');">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete_project_admin_' ~ p.id) }}">
+              <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="text-center text-muted">Aucun projet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -43,11 +43,10 @@ security:
   access_control:
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/register, roles: PUBLIC_ACCESS }
-
     - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/me, roles: ROLE_USER } 
     - { path: ^/dashboard, roles: ROLE_USER }
     - { path: ^/project/new, roles: ROLE_USER }
     - { path: ^/project/\d+/apply, roles: ROLE_USER }
     - { path: ^/my-projects, roles: ROLE_USER }
-
     - { path: ^/, roles: PUBLIC_ACCESS }

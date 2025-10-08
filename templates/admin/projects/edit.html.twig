@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Éditer projet{% endblock %}
+{% block body %}
+  <h1>Éditer projet #{{ p.id }}</h1>
+  <form method="post" class="card p-3 col-12 col-md-8 col-lg-6">
+    <div class="mb-3">
+      <label class="form-label">Titre</label>
+      <input class="form-control" name="title" value="{{ p.title }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" name="description" rows="5" required>{{ p.description }}</textarea>
+    </div>
+    <button class="btn btn-primary">Enregistrer</button>
+    <a class="btn btn-outline-secondary ms-2" href="{{ path('admin_projects_index') }}">Annuler</a>
+  </form>
+{% endblock %}

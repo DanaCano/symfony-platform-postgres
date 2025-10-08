@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Éditer utilisateur{% endblock %}
+{% block body %}
+  <h1>Éditer utilisateur #{{ u.id }}</h1>
+  <form method="post" class="card p-3 col-12 col-md-8 col-lg-6">
+    <div class="mb-3">
+      <label class="form-label">Nom</label>
+      <input class="form-control" name="name" value="{{ u.name }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" type="email" name="email" value="{{ u.email }}" required>
+    </div>
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" name="is_admin" id="adm" {{ 'ROLE_ADMIN' in u.roles ? 'checked' }}>
+      <label class="form-check-label" for="adm">Administrateur</label>
+    </div>
+    <button class="btn btn-primary">Enregistrer</button>
+    <a class="btn btn-outline-secondary ms-2" href="{{ path('admin_users_index') }}">Annuler</a>
+  </form>
+{% endblock %}

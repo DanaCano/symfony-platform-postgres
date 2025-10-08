@@ -23,17 +23,22 @@
           {% if is_granted('ROLE_USER') %}
             <li class="nav-item"><a class="nav-link" href="{{ path('app_project_new') }}">Nouveau projet</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('app_project_my_projects') }}">Mes projets</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ path('app_me_profile') }}">Mon profil</a></li>
           {% endif %}
           {% if is_granted('ROLE_ADMIN') %}
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Admin</a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{{ path('admin_dashboard') }}">Tableau de bord</a></li>
+                <li><a class="dropdown-item" href="{{ path('admin_users_index') }}">Utilisateurs</a></li>
+                <li><a class="dropdown-item" href="{{ path('admin_projects_index') }}">Projets</a></li>
+              </ul>
+            </li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ path('user_dashboard') }}">Mon espace</a></li>
           {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_logout') }}" aria-label="Se déconnecter">Sortir</a>
-            </a>
-          </li>
-        {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" aria-label="Se déconnecter">Sortir</a></li>
+          {% endif %}
           <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Se connecter</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Inscription</a></li>
         {% endif %}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Erreur serveur{% endblock %}
+{% block body %}
+  <div class="text-center py-5">
+    <h1 class="display-5">Oups…</h1>
+    <p>Une erreur inattendue s’est produite.</p>
+    <a class="btn btn-primary" href="{{ path('app_home') }}">Retour à l’accueil</a>
+  </div>
+{% endblock %}

@@ -1,4 +1,14 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('submit', (e) => {
+    const form = e.target;
+    if (form && form.matches('form[data-confirm]')) {
+      const msg = form.getAttribute('data-confirm') || '¿Seguro que quieres continuar?';
+      if (!confirm(msg)) {
+        e.preventDefault();
+      }
+    }
+  });
+  
   const applyForm = document.getElementById('apply-form');
   if (applyForm) {
     applyForm.addEventListener('submit', function (e) {
