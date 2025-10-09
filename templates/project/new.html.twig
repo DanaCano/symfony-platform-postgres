@@ -11,6 +11,7 @@
       <label for="description" class="form-label">Descripción</label>
       <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
     </div>
+    <input type="hidden" name="_token" value="{{ csrf_token('project_new') }}">
     <button type="submit" class="btn btn-primary">Publicar Proyecto</button>
   </form>
 {% endblock %}

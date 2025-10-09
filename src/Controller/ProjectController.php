@@ -22,10 +22,10 @@ class ProjectController extends AbstractController
         if ($request->isMethod('POST')) {
 
             $csrf = (string) $request->request->get('_token');
-            if (!$this->isCsrfTokenValid('project_edit_' . $project->getId(), $csrf)) {
+            if (!$this->isCsrfTokenValid('project_new', $csrf)) {
                 $this->addFlash('error', 'Token CSRF inválido.');
-                return $this->redirectToRoute('app_project_edit', ['id' => $project->getId()]);
-        }
+                return $this->redirectToRoute('app_project_new');
+            }
 
             $title = trim((string)$request->request->get('title'));
             $description = trim((string)$request->request->get('description'));
@@ -122,6 +122,13 @@ class ProjectController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
+
+            $csrf = (string) $request->request->get('_token');
+            if (!$this->isCsrfTokenValid('project_edit_' . $project->getId(), $csrf)) {
+                $this->addFlash('error', 'Token CSRF inválido.');
+                return $this->redirectToRoute('app_project_edit', ['id' => $project->getId()]);
+            }
+
             $title = trim((string)$request->request->get('title'));
             $description = trim((string)$request->request->get('description'));
 
