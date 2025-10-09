@@ -22,7 +22,7 @@ Open: http://localhost:8000
 In `.env`, use:
 ```
 # DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
-DATABASE_URL="postgresql://usuario:password@127.0.0.1:5432/mi_bd?serverVersion=16&charset=utf8"
+DATABASE_URL="postgresql://usuario:password@127.0.0.1:xxxx/mi_bd?serverVersion=16&charset=utf8"
 ```
 Then:
 ```bash
@@ -79,7 +79,7 @@ php -S 0.0.0.0:8000 -t public
 
 DB credentials used:
 - host: 127.0.0.1
-- port: 5432
+- port: xxx
 - db: app_db
 - user: app
 - pass: app
