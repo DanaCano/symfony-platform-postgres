@@ -1,9 +1,12 @@
-parameters: { }
+pparameters:
+  env(RECAPTCHA_SITE_KEY): ''
+  env(RECAPTCHA_SECRET): ''
 
 services:
   _defaults:
     autowire: true
     autoconfigure: true
+
   App\:
     resource: '../src/'
     exclude:

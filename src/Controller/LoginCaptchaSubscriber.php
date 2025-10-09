@@ -13,12 +13,17 @@ class LoginCaptchaSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        
+
         return ['kernel.request' => ['onKernelRequest', 8]];
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
+
+        if (empty($_ENV['RECAPTCHA_SECRET'])) {
+            return;
+        }
+
         $req = $event->getRequest();
 
         if ($req->getPathInfo() !== '/login' || $req->getMethod() !== 'POST') {

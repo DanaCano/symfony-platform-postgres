@@ -30,7 +30,6 @@
 
       <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-      {# ✅ reCAPTCHA solo si hay clave configurada #}
       {% if recaptcha_site_key %}
         <div class="mb-3">
           <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
