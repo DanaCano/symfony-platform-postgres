@@ -9,21 +9,31 @@
         <label for="inputName" class="form-label">Nombre</label>
         <input type="text" name="name" id="inputName" class="form-control" required>
       </div>
+
       <div class="mb-3">
         <label for="inputEmail" class="form-label">Correo Electrónico</label>
         <input type="email" name="email" id="inputEmail" class="form-control" required>
       </div>
+
       <div class="mb-3">
         <label for="inputPassword" class="form-label">Contraseña</label>
         <input type="password" name="password" id="inputPassword" class="form-control" required>
       </div>
+
+      {# CSRF token #}
       <input type="hidden" name="_token" value="{{ csrf_token('register') }}">
-      <div class="mb-3">
-          <div class="g-recaptcha" data-sitekey="{{ getenv('RECAPTCHA_SITE_KEY') }}"></div>
-      </div>
-      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+      {# reCAPTCHA solo si hay clave configurada #}
+      {% if recaptcha_site_key %}
+        <div class="mb-3">
+          <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+        </div>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      {% endif %}
+
       <button type="submit" class="btn btn-primary w-100">Registrarse</button>
     </form>
+
     <div class="mt-3 text-center">
       <small>¿Ya tienes cuenta? <a href="{{ path('app_login') }}">Inicia sesión</a></small>
     </div>
