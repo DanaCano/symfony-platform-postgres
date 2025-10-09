@@ -27,6 +27,13 @@ class UserAdminController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($request->isMethod('POST')) {
+
+        $csrf = (string) $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('admin_user_edit_' . $user->getId(), $csrf)) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_users_edit', ['id' => $user->getId()]);
+}
+
             $name  = trim((string)$request->request->get('name'));
             $email = trim((string)$request->request->get('email'));
             $isAdmin = (bool) $request->request->get('is_admin');

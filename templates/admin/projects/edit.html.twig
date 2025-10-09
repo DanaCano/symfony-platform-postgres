@@ -11,6 +11,7 @@
       <label class="form-label">Description</label>
       <textarea class="form-control" name="description" rows="5" required>{{ p.description }}</textarea>
     </div>
+    <input type="hidden" name="_token" value="{{ csrf_token('admin_project_edit_' ~ p.id) }}">
     <button class="btn btn-primary">Enregistrer</button>
     <a class="btn btn-outline-secondary ms-2" href="{{ path('admin_projects_index') }}">Annuler</a>
   </form>

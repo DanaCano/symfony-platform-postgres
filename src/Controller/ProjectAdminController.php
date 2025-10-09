@@ -26,6 +26,12 @@ class ProjectAdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($request->isMethod('POST')) {
+            
+            $csrf = (string) $request->request->get('_token');
+            if (!$this->isCsrfTokenValid('admin_project_edit_' . $project->getId(), $csrf)) {
+                $this->addFlash('error', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('admin_projects_edit', ['id' => $project->getId()]);
+}
             $title = trim((string)$request->request->get('title'));
             $desc  = trim((string)$request->request->get('description'));
             if (!$title || !$desc) {

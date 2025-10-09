@@ -20,6 +20,13 @@ class ProjectController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('POST')) {
+
+            $csrf = (string) $request->request->get('_token');
+            if (!$this->isCsrfTokenValid('project_edit_' . $project->getId(), $csrf)) {
+                $this->addFlash('error', 'Token CSRF inválido.');
+                return $this->redirectToRoute('app_project_edit', ['id' => $project->getId()]);
+        }
+
             $title = trim((string)$request->request->get('title'));
             $description = trim((string)$request->request->get('description'));
 

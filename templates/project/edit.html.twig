@@ -11,6 +11,7 @@
       <label class="form-label">Descripción</label>
       <textarea class="form-control" name="description" rows="5" required>{{ project.description }}</textarea>
     </div>
+    <input type="hidden" name="_token" value="{{ csrf_token('project_edit_' ~ project.id) }}">
     <button class="btn btn-primary">Guardar</button>
     <a class="btn btn-outline-secondary ms-2" href="{{ path('app_project_show', {id: project.id}) }}">Cancelar</a>
   </form>

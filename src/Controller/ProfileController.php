@@ -21,6 +21,11 @@ class ProfileController extends AbstractController
         $user = $this->getUser();
 
         if ($request->isMethod('POST')) {
+            $csrf = (string) $request->request->get('_token');
+            if (!$this->isCsrfTokenValid('profile_update', $csrf)) {
+                $this->addFlash('error', 'Token CSRF inválido.');
+                return $this->redirectToRoute('app_me_profile');
+        }
             $name  = trim((string) $request->request->get('name'));
             $email = trim((string) $request->request->get('email'));
 
@@ -52,15 +57,31 @@ class ProfileController extends AbstractController
             $new1    = (string) $request->request->get('new_password');
             $new2    = (string) $request->request->get('new_password2');
 
+                //Regex
+            $minLen = 8;
+            $regex  = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{' . $minLen . ',}$/';
+
+            //CSRF
+            $csrf = (string) $request->request->get('_token');
+            if (!$this->isCsrfTokenValid('password_change', $csrf)) {
+                $this->addFlash('error', 'Token CSRF inválido.');
+                return $this->redirectToRoute('app_me_password');
+            }
+
             if (!$hasher->isPasswordValid($user, $current)) {
                 $this->addFlash('error', 'Mot de passe actuel incorrect.');
-            } elseif (strlen($new1) < 6) {
-                $this->addFlash('error', 'Le nouveau mot de passe doit contenir au moins 6 caractères.');
             } elseif ($new1 !== $new2) {
                 $this->addFlash('error', 'Les nouveaux mots de passe ne correspondent pas.');
+            } elseif (strlen($new1) < $minLen || !preg_match($regex, $new1)) {
+                $this->addFlash('error', 'Le nouveau mot de passe doit avoir au moins '
+                    . $minLen . ' caractères et contenir majuscule, minuscule, chiffre et caractère spécial.');
             } else {
                 $user->setPassword($hasher->hashPassword($user, $new1));
                 $em->flush();
+
+                //notif changement par mail
+                // $this->enviarNotificacionPasswordChange($user);
+
                 $this->addFlash('success', 'Mot de passe modifié.');
                 return $this->redirectToRoute('app_me_password');
             }
