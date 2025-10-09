@@ -4,7 +4,7 @@ Project generated on 2025-09-26, ready to run on macOS, upload to GitHub, and de
 
 ## Requirements
 - PHP 8.3+ (ideally 8.4)
-- Composer 2
+- Composer
 - Symfony CLI (recommended)
 - PostgreSQL 15/16 (optional; by default we use SQLite for faster startup)
 
