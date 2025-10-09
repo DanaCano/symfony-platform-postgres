@@ -1,4 +1,5 @@
+# config/packages/twig.yaml
 twig:
   default_path: '%kernel.project_dir%/templates'
   globals:
-    recaptcha_site_key: '%env(default:RECAPTCHA_SITE_KEY)%'
+    recaptcha_site_key: '%env(RECAPTCHA_SITE_KEY)%'
