@@ -14,17 +14,20 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         {% if app.user %}
           <li class="nav-item">
             <a class="nav-link" href="{{ path('app_home') }}">Projets</a>
           </li>
+
           {% if is_granted('ROLE_USER') %}
             <li class="nav-item"><a class="nav-link" href="{{ path('app_project_new') }}">Nouveau projet</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('app_project_my_projects') }}">Mes projets</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('app_me_profile') }}">Mon profil</a></li>
           {% endif %}
+
           {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Admin</a>
@@ -37,8 +40,10 @@
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ path('user_dashboard') }}">Mon espace</a></li>
           {% endif %}
-            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" aria-label="Se déconnecter">Sortir</a></li>
-          {% endif %}
+
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" aria-label="Se déconnecter">Sortir</a></li>
+
+        {% else %}
           <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Se connecter</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Inscription</a></li>
         {% endif %}
@@ -46,6 +51,7 @@
     </div>
   </div>
 </nav>
+
 <div class="container pt-5">
   {% for message in app.flashes('success') %}
     <div class="alert alert-success">{{ message }}</div>
@@ -53,8 +59,10 @@
   {% for message in app.flashes('error') %}
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
+
   {% block body %}{% endblock %}
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
