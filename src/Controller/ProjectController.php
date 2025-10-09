@@ -20,7 +20,7 @@ class ProjectController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('POST')) {
-
+            // ✅ CSRF para crear (NO usa $project)
             $csrf = (string) $request->request->get('_token');
             if (!$this->isCsrfTokenValid('project_new', $csrf)) {
                 $this->addFlash('error', 'Token CSRF inválido.');
@@ -122,7 +122,7 @@ class ProjectController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-
+            // ✅ CSRF para edición (coincide con el Twig)
             $csrf = (string) $request->request->get('_token');
             if (!$this->isCsrfTokenValid('project_edit_' . $project->getId(), $csrf)) {
                 $this->addFlash('error', 'Token CSRF inválido.');
