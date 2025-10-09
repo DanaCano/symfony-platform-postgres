@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block title %}Nuevo Proyecto{% endblock %}
+{% block title %}Nouveau projet{% endblock %}
 {% block body %}
-  <h1>Crear un Nuevo Proyecto</h1>
+  <h1>Créer un nouveau projet</h1>
   <form method="post">
     <div class="mb-3">
-      <label for="title" class="form-label">Título</label>
+      <label for="title" class="form-label">Titre</label>
       <input type="text" name="title" id="title" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label for="description" class="form-label">Descripción</label>
+      <label for="description" class="form-label">Description</label>
       <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token('project_new') }}">
-    <button type="submit" class="btn btn-primary">Publicar Proyecto</button>
+    <button type="submit" class="btn btn-primary">Publier un projet</button>
   </form>
 {% endblock %}

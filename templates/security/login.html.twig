@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Iniciar Sesión{% endblock %}
+{% block title %}Se connecter{% endblock %}
 {% block body %}
 <div class="row justify-content-center">
   <div class="col-12 col-md-6 col-lg-4">
@@ -13,18 +13,18 @@
 
       {% if app.user %}
         <div class="mb-3">
-          Ya has iniciado sesión como {{ app.user.name }}.
-          <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+          Vous êtes déjà connecté en tant que {{ app.user.name }}.
+          <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
       {% endif %}
 
       <div class="mb-3">
-        <label for="inputEmail" class="form-label">Correo Electrónico</label>
+        <label for="inputEmail" class="form-label">Courrier électronique</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
       </div>
 
       <div class="mb-3">
-        <label for="inputPassword" class="form-label">Contraseña</label>
+        <label for="inputPassword" class="form-label">Mot de passe</label>
         <input type="password" name="password" id="inputPassword" class="form-control" required>
       </div>
 
@@ -37,11 +37,11 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
       {% endif %}
 
-      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+      <button type="submit" class="btn btn-primary w-100">Entrer</button>
     </form>
 
     <div class="mt-3 text-center">
-      <small>¿No tienes una cuenta? <a href="{{ path('app_register') }}">Regístrate</a></small>
+      <small>Vous n'avez pas encore de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a></small>
     </div>
   </div>
 </div>

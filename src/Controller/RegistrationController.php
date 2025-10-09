@@ -30,14 +30,14 @@ class RegistrationController extends AbstractController
             // CSRF
             $csrf = (string) $request->request->get('_token');
             if (!$this->isCsrfTokenValid('register', $csrf)) {
-                $this->addFlash('error', 'Token CSRF inválido.');
+                $this->addFlash('error', 'Token CSRF invalide.');
                 return $this->redirectToRoute('app_register');
             }
 
             // CAPTCHA
             $captchaResponse = (string) $request->request->get('g-recaptcha-response');
             if (!$captchaResponse) {
-                $this->addFlash('error', 'Captcha requerido.');
+                $this->addFlash('error', 'Captcha requis.');
                 return $this->redirectToRoute('app_register');
             }
 
@@ -51,19 +51,19 @@ class RegistrationController extends AbstractController
             ]);
             $data = $verify->toArray(false);
             if (empty($data['success'])) {
-                $this->addFlash('error', 'Captcha inválido.');
+                $this->addFlash('error', 'Captcha invalide.');
                 return $this->redirectToRoute('app_register');
             }
 
             if (!$name || !$email || !$plain) {
-                $this->addFlash('error', 'Todos los campos son obligatorios.');
+                $this->addFlash('error', 'Tous les champs sont obligatoires.');
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->addFlash('error', 'Email inválido.');
+                $this->addFlash('error', 'Email invalide.');
             } elseif (strlen($plain) < $minLen || !preg_match($regex, $plain)) {
-                $this->addFlash('error', 'La contraseña debe tener mínimo '
-                    . $minLen . ' caracteres e incluir mayúscula, minúscula, dígito y carácter especial.');
+                $this->addFlash('error', 'Le mot de passe doit comporter au moins '
+                    . $minLen . ' caractères et inclure des majuscules, des minuscules, des chiffres et des caractères spéciaux.');
             } elseif ($userRepository->findOneBy(['email' => $email])) {
-                $this->addFlash('error', 'Ya existe una cuenta con ese email.');
+                $this->addFlash('error', 'Un compte existe déjà avec cette adresse e-mail.');
             } else {
                 $u = new User();
                 $u->setName($name)->setEmail($email)->setRoles(['ROLE_USER']);
@@ -72,7 +72,7 @@ class RegistrationController extends AbstractController
                 $em->persist($u);
                 $em->flush();
 
-                $this->addFlash('success', 'Registro exitoso. Inicia sesión.');
+                $this->addFlash('success', 'Inscription réussie. Connectez-vous.');
                 return $this->redirectToRoute('app_login');
             }
         }

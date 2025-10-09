@@ -20,10 +20,10 @@ class ProjectController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('POST')) {
-            // ✅ CSRF para crear (NO usa $project)
+            //CSRF
             $csrf = (string) $request->request->get('_token');
             if (!$this->isCsrfTokenValid('project_new', $csrf)) {
-                $this->addFlash('error', 'Token CSRF inválido.');
+                $this->addFlash('error', 'Token CSRF invalide.');
                 return $this->redirectToRoute('app_project_new');
             }
 
@@ -31,7 +31,7 @@ class ProjectController extends AbstractController
             $description = trim((string)$request->request->get('description'));
 
             if (!$title || !$description) {
-                $this->addFlash('error', 'Debes completar título y descripción.');
+                $this->addFlash('error', 'Vous devez remplir le titre et la description.');
             } else {
                 $project = new Project();
                 $project->setTitle($title)
@@ -42,7 +42,7 @@ class ProjectController extends AbstractController
                 $em->persist($project);
                 $em->flush();
 
-                $this->addFlash('success', 'Proyecto creado.');
+                $this->addFlash('success', 'Projet créé.');
                 return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
             }
         }
@@ -66,7 +66,7 @@ class ProjectController extends AbstractController
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => false, 'error' => 'No puedes postularte a tu propio proyecto.'], 400);
             }
-            $this->addFlash('error', 'No puedes postularte a tu propio proyecto.');
+            $this->addFlash('error', 'Vous ne pouvez pas postuler à votre propre projet.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
@@ -75,16 +75,16 @@ class ProjectController extends AbstractController
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => false, 'error' => 'Ya te has postulado a este proyecto.'], 400);
             }
-            $this->addFlash('error', 'Ya te has postulado a este proyecto.');
+            $this->addFlash('error', 'Vous avez déjà postulé à ce projet.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
         $message = trim((string)$request->request->get('message'));
         if (!$message) {
             if ($request->isXmlHttpRequest()) {
-                return $this->json(['success' => false, 'error' => 'El mensaje no puede estar vacío.'], 400);
+                return $this->json(['success' => false, 'error' => 'Le message ne peut pas être vide.'], 400);
             }
-            $this->addFlash('error', 'Debes escribir un mensaje para postularte.');
+            $this->addFlash('error', 'Vous devez rédiger un message pour postuler.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
@@ -99,7 +99,7 @@ class ProjectController extends AbstractController
             return $this->json(['success' => true]);
         }
 
-        $this->addFlash('success', 'Postulación enviada.');
+        $this->addFlash('success', 'Candidature envoyée');
         return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
     }
 
@@ -122,10 +122,10 @@ class ProjectController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            // ✅ CSRF para edición (coincide con el Twig)
+            //CSRF
             $csrf = (string) $request->request->get('_token');
             if (!$this->isCsrfTokenValid('project_edit_' . $project->getId(), $csrf)) {
-                $this->addFlash('error', 'Token CSRF inválido.');
+                $this->addFlash('error', 'Token CSRF invalide.');
                 return $this->redirectToRoute('app_project_edit', ['id' => $project->getId()]);
             }
 
@@ -133,11 +133,11 @@ class ProjectController extends AbstractController
             $description = trim((string)$request->request->get('description'));
 
             if (!$title || !$description) {
-                $this->addFlash('error', 'Debes completar título y descripción.');
+                $this->addFlash('error', 'Vous devez remplir le titre et la description.');
             } else {
                 $project->setTitle($title)->setDescription($description);
                 $doctrine->getManager()->flush();
-                $this->addFlash('success', 'Proyecto actualizado.');
+                $this->addFlash('success', 'Projet mis à jour.');
                 return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
             }
         }
@@ -156,7 +156,7 @@ class ProjectController extends AbstractController
         }
 
         if (!$this->isCsrfTokenValid('delete_project_'.$project->getId(), (string)$request->request->get('_token'))) {
-            $this->addFlash('error', 'Token CSRF inválido.');
+            $this->addFlash('error', 'Token CSRF invalide.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()]);
         }
 
@@ -164,7 +164,7 @@ class ProjectController extends AbstractController
         $em->remove($project);
         $em->flush();
 
-        $this->addFlash('success', 'Proyecto eliminado.');
+        $this->addFlash('success', 'Projet supprimé.');
         return $this->redirectToRoute('app_home');
     }
 }

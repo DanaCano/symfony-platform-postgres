@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
-{% block title %}Editar proyecto{% endblock %}
+{% block title %}Modifier le projet{% endblock %}
 {% block body %}
-  <h1>Editar proyecto</h1>
+  <h1>Modifier le projet</h1>
   <form method="post" class="card p-3 col-12 col-md-8 col-lg-6">
     <div class="mb-3">
-      <label class="form-label">Título</label>
+      <label class="form-label">Titre</label>
       <input class="form-control" name="title" value="{{ project.title }}" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Descripción</label>
+      <label class="form-label">Description</label>
       <textarea class="form-control" name="description" rows="5" required>{{ project.description }}</textarea>
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token('project_edit_' ~ project.id) }}">
-    <button class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary ms-2" href="{{ path('app_project_show', {id: project.id}) }}">Cancelar</a>
+    <button class="btn btn-primary">Enregistrer</button>
+    <a class="btn btn-outline-secondary ms-2" href="{{ path('app_project_show', {id: project.id}) }}">Annuler</a>
   </form>
 {% endblock %}

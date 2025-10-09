@@ -45,10 +45,8 @@ class MakeAdminCommand extends Command
             $user->setName('Admin');
         }
 
-        // rol admin (hereda ROLE_USER por role_hierarchy)
         $user->setRoles(['ROLE_ADMIN']);
 
-        // siempre (re)hasheamos con el algoritmo actual
         $user->setPassword($this->hasher->hashPassword($user, $plain));
 
         $this->em->persist($user);

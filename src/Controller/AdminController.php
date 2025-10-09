@@ -19,7 +19,6 @@ class AdminController extends AbstractController
     #[Route('/after-login', name: 'app_after_login')]
     public function afterLogin(): Response
     {
-        // Si no hay usuario autenticado, a la home (o login)
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
@@ -29,7 +28,7 @@ class AdminController extends AbstractController
         }
 
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('user_dashboard'); // usuarios normales
+            return $this->redirectToRoute('user_dashboard');
         }
 
         return $this->redirectToRoute('app_home');
