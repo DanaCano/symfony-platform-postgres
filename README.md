@@ -1,12 +1,12 @@
 # Plataform Symfony + Twig + JavaScript (PostgreSQL)
 
-Project generated on 2025-09-26, ready to run on macOS, upload to GitHub, and deploy for free.
+Projet prêt à être exécuté, téléchargé sur GitHub et déployé gratuitement (développement et améliorations en cours)
 
 ## Requirements
 - PHP 8.3+ (ideally 8.4)
 - Composer
 - Symfony CLI (recommended)
-- PostgreSQL 15/16 (optional; by default we use SQLite for faster startup)
+- PostgreSQL 15/16 (facultatif ; par défaut, nous utilisons SQLite pour un démarrage plus rapide)
 
 ## Quick steps (SQLite)
 ```bash
@@ -41,12 +41,12 @@ php bin/console app:make-admin email@example.com
 - **Fly.io**: optional with Dockerfile.
 
 ## Routes
-- `/` listado de proyectos
-- `/project/new` crear proyecto (requiere login)
-- `/project/<built-in function id>` detalle + postulación
-- `/my-projects` proyectos del usuario
-- `/register` registro
-- `/login` login, `/logout` logout
+- `/` liste des projets
+- `/project/new` créer un projet (connexion requise)
+- `/project/<built-in function id>` détails + candidature
+- `/my-projects` projets de l'utilisateur
+- `/register` enregistrement
+- `/login` connexion, `/logout` déconnexion
 
 
 ![Architecture](docs/architecture_flow.png)
@@ -61,15 +61,15 @@ php bin/console app:make-admin email@example.com
 4. `php bin/console doctrine:migrations:migrate -n`
 5. `symfony serve -d` y abre http://localhost:8000
 
-> If you are not using Docker, install Postgres locally and adjust `DATABASE_URL` with your credentials.
+> Si vous n'utilisez pas Docker, installez Postgres localement et ajustez `DATABASE_URL` avec vos credentials.
 
 
-## Mode PostgreSQL (by default in this ZIP file)
+## Mode PostgreSQL (par défaut dans ce fichier ZIP)
 1) Set up Postgres with Docker:
 ```bash
 docker-compose up -d
 ```
-2) Install dependencies and create schema:
+2) Installez les dépendances et créez le schéma :
 ```bash
 composer install --no-interaction
 php bin/console doctrine:database:create --if-not-exists
@@ -88,3 +88,18 @@ DB credentials used:
 - db: app_db
 - user: app
 - pass: app
+
+## Déploiement de l'application 
+Render est une plateforme d'hébergement PaaS (type Heroku) qui vous décharge de la gestion des serveurs : elle construit votre application à partir de GitHub, la déploie, l'expose avec HTTPS et vous fournit des services gérés tels que PostgreSQL, cron jobs, workers, etc.
+
+Services dans Render : 
+1) Service Web – symfony-platform-postgres
+- Render clone votre dépôt GitHub et compile votre application (avec Dockerfile ou des commandes de compilation).
+- Il lance un conteneur qui écoute sur un port (Render injecte PORT).
+- Il vous attribue un domaine onrender.com avec TLS/SSL automatique.
+- Vous pouvez définir des variables d'environnement (APP_ENV, APP_SECRET, DATABASE_URL, RECAPTCHA_SITE_KEY/SECRET, MAILER_DSN, etc.).
+- Journaux accessibles dans le panneau ; contrôles de santé ; autoscale (selon le plan).
+
+2) PostgreSQL – symfony-db
+- Il s'agit d'une base de données gérée par Render.
+- Render vous montre une chaîne de connexion (externe et interne).
