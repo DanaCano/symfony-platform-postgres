@@ -49,9 +49,9 @@ php bin/console app:make-admin email@example.com
 - `/login` login, `/logout` logout
 
 
-![Architecture](docs/app-architecture.svg)
+![Architecture](docs/architecture_flow.png)
 
-![Flux de candidature](docs/app-sequence.png)
+![Flux](docs/uml_classes.png)
 
 ---
 ### Use with PostgreSQL (Quick with Docker)
