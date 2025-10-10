@@ -32,7 +32,7 @@ class LoginCaptchaSubscriber implements EventSubscriberInterface
 
         $captcha = (string) $req->request->get('g-recaptcha-response');
         if (!$captcha) {
-            $req->getSession()?->getFlashBag()->add('error', 'Captcha requerido.');
+            $req->getSession()?->getFlashBag()->add('error', 'Captcha requis.');
             $event->setResponse(new RedirectResponse($this->urls->generate('app_login')));
             return;
         }

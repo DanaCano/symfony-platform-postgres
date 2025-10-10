@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('submit', (e) => {
     const form = e.target;
     if (form && form.matches('form[data-confirm]')) {
-      const msg = form.getAttribute('data-confirm') || '¿Seguro que quieres continuar?';
+      const msg = form.getAttribute('data-confirm') || 'Voulez-vous vraiment continuer ?';
       if (!confirm(msg)) {
         e.preventDefault();
       }
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const projectId = this.dataset.projectId;
       const messageField = document.getElementById('message');
       const message = (messageField.value || '').trim();
-      if (!message) { alert('Por favor ingresa un mensaje.'); return; }
+      if (!message) { alert('Veuillez saisir un message.'); return; }
       fetch(`/project/${projectId}/apply`, {
         method: 'POST',
         headers: {
@@ -26,16 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         body: `message=${encodeURIComponent(message)}`
       }).then(r => r.json()).then(data => {
         if (data.success) {
-          alert('¡Postulación enviada!');
+          alert('Candidature envoyée !');
           messageField.value='';
           messageField.disabled=true;
           this.querySelector('button[type="submit"]').disabled=true;
         } else {
-          alert(data.error || 'Error al postular.');
+          alert(data.error || 'Erreur lors de la candidature.');
         }
       }).catch(err => {
         console.error(err);
-        alert('Error de red.');
+        alert('Erreur réseau.');
       });
     });
   }

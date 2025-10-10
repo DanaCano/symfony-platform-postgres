@@ -12,7 +12,7 @@
               <p class="card-text flex-fill">
                 {{ project.description|length > 120 ? project.description[:120] ~ '…' : project.description }}
               </p>
-              <p class="card-text"><small class="text-muted">Por <strong>{{ project.owner.name }}</strong><br>{{ project.createdAt|date("Y-m-d H:i") }}</small></p>
+              <p class="card-text"><small class="text-muted">Par <strong>{{ project.owner.name }}</strong><br>{{ project.createdAt|date("Y-m-d H:i") }}</small></p>
               <a href="{{ path('app_project_show', {'id': project.id}) }}" class="btn btn-primary mt-2">Voir les détails</a>
             </div>
           </div>
