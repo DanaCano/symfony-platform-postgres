@@ -48,6 +48,11 @@ php bin/console app:make-admin email@example.com
 - `/register` registro
 - `/login` login, `/logout` logout
 
+
+![Architecture](docs/app-architecture.svg)
+
+![Flux de candidature](docs/app-sequence.png)
+
 ---
 ### Use with PostgreSQL (Quick with Docker)
 1. `docker compose up -d`
